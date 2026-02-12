@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,18 +13,21 @@
             margin: 0;
             padding: 20px;
         }
+
         h1 {
             color: #4ec9b0;
             text-align: center;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
             background-color: #252526;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
+
         #logs {
             background-color: #1e1e1e;
             border: 1px solid #3c3c3c;
@@ -34,45 +38,51 @@
             font-family: 'Consolas', 'Courier New', monospace;
             white-space: pre-wrap;
         }
+
         .log-entry {
             border-bottom: 1px solid #333;
             padding: 5px 0;
         }
+
         .log-timestamp {
             color: #569cd6;
             font-size: 0.9em;
         }
+
         .log-message {
             color: #ce9178;
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
         <h1>Pipeline Execution Logs</h1>
         <p>This page automatically updates when a new commit is pushed to the repository.</p>
-        
+
         <div id="logs">
             <!-- Logs will be injected here by the pipeline -->
 
             <div class="log-entry">
-                <span class="log-timestamp">[2026-02-12 10:11:34] Commit 4b4eed8 by Hardik Agrawal:</span> 
+                <span class="log-timestamp">[2026-02-12 10:11:34] Commit 4b4eed8 by Hardik Agrawal:</span>
                 <span class="log-message">Initial commit with index.html, update script, and pipeline</span>
             </div>
-    
+
 
             <div class="log-entry">
-                <span class="log-timestamp">[2026-02-12 10:10:23] Commit Unknown by Unknown:</span> 
-                <span class="log-message">Error getting git info: Command '['git', 'log', '-1', '--format=%h']' returned non-zero exit status 128.</span>
+                <span class="log-timestamp">[2026-02-12 10:10:23] Commit Unknown by Unknown:</span>
+                <span class="log-message">Error getting git info: Command '['git', 'log', '-1', '--format=%h']' returned
+                    non-zero exit status 128.</span>
             </div>
-    
+
             <div class="log-entry">
-                <span class="log-timestamp">[Initial Setup]</span> 
+                <span class="log-timestamp">[Initial Setup]</span>
                 <span class="log-message">Project initialized. Waiting for pipeline updates...</span>
             </div>
         </div>
     </div>
 
 </body>
+
 </html>
