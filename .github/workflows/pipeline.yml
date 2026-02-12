@@ -29,6 +29,13 @@ jobs:
       - name: Print Success Message
         run: echo "Build Successful 🚀"
 
+      - name: Send Slack Notification
+        if: always()
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+          --data '{"text":"GitHub CI Pipeline Completed 🚀"}' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
+
       - name: Update Logs in index.html
         run: |
           python update_log.py
