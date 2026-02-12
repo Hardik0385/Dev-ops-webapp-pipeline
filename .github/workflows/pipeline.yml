@@ -23,6 +23,12 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Show File List
+        run: ls -la
+
+      - name: Print Success Message
+        run: echo "Build Successful 🚀"
+
       - name: Update Logs in index.html
         run: |
           python update_log.py
