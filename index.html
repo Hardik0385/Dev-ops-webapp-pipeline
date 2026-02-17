@@ -5,52 +5,190 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DevOps Pipeline Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #1e1e1e;
-            color: #d4d4d4;
-            margin: 0;
-            padding: 20px;
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: rgba(30, 41, 59, 0.7);
+            --card-color: rgba(255, 255, 255, 0.05);
+            --card-hover-color: rgba(255, 255, 255, 0.1);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #10b981;
+            --font-family: 'Inter', system-ui, sans-serif;
         }
 
-        h1 {
-            color: #4ec9b0;
-            text-align: center;
+        body {
+            font-family: var(--font-family);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
         }
 
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #252526;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 900px;
+            background: var(--surface-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
-        #logs {
-            background-color: #1e1e1e;
-            border: 1px solid #3c3c3c;
-            padding: 15px;
-            border-radius: 4px;
-            height: 400px;
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            margin-top: 10px;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 10px;
+        }
+
+        #logs-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            height: 500px;
             overflow-y: auto;
-            font-family: 'Consolas', 'Courier New', monospace;
-            white-space: pre-wrap;
+            position: relative;
+        }
+
+        /* Custom Scrollbar */
+        #logs-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #logs-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #logs-container::-webkit-scrollbar-thumb {
+            background-color: var(--border-color);
+            border-radius: 20px;
         }
 
         .log-entry {
-            border-bottom: 1px solid #333;
-            padding: 5px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: var(--card-color);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .log-entry:last-child {
+            margin-bottom: 0;
+        }
+
+        .log-entry:hover {
+            background: var(--card-hover-color);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .log-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .commit-hash {
+            font-family: 'Consolas', 'Monaco', monospace;
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .log-author {
+            color: #e2e8f0;
+            font-weight: 500;
         }
 
         .log-timestamp {
-            color: #569cd6;
-            font-size: 0.9em;
+            font-size: 0.75rem;
+            color: #64748b;
         }
 
         .log-message {
-            color: #ce9178;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #f1f5f9;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        /* Animation for new entries */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .log-entry.new {
+            animation: slideIn 0.5s ease-out forwards;
+            border-left: 3px solid var(--accent-secondary);
         }
     </style>
 </head>
@@ -58,35 +196,72 @@
 <body>
 
     <div class="container">
-        <h1>Pipeline Execution Logs</h1>
-        <h2 style="text-align: center; color: #4ec9b0;">Updated Version 🚀</h2>
-        <p>This page automatically updates when a new commit is pushed to the repository.</p>
+        <header>
+            <h1>Pipeline Execution Logs</h1>
+            <div class="status-badge">Live Updates 🚀</div>
+            <p class="subtitle">Real-time tracking of repository commits and deployments</p>
+        </header>
 
-        <div id="logs">
+        <div id="logs-container">
             <!-- Logs will be injected here by the pipeline -->
 
-            <div class="log-entry">
-                <span class="log-timestamp">[2026-02-12 04:47:48] Commit 17ee681 by Hardik Agrawal:</span>
-                <span class="log-message">Merge remote changes and resolve index.html conflict</span>
+            <div class="log-entry new">
+                <div class="log-header">
+                    <div class="log-meta">
+                        <span class="commit-hash">a52d110</span>
+                        <span class="log-author">Hardik Agrawal</span>
+                    </div>
+                    <span class="log-timestamp">2026-02-17 08:37:21</span>
+                </div>
+                <div class="log-message">Phase 6: Updated website to test full automation</div>
             </div>
-
-
-            <div class="log-entry">
-                <span class="log-timestamp">[2026-02-12 10:11:34] Commit 4b4eed8 by Hardik Agrawal:</span>
-                <span class="log-message">Initial commit with index.html, update script, and pipeline</span>
-            </div>
-
-
-            <div class="log-entry">
-                <span class="log-timestamp">[2026-02-12 10:10:23] Commit Unknown by Unknown:</span>
-                <span class="log-message">Error getting git info: Command '['git', 'log', '-1', '--format=%h']' returned
-                    non-zero exit status 128.</span>
-            </div>
+    
 
             <div class="log-entry">
-                <span class="log-timestamp">[Initial Setup]</span>
-                <span class="log-message">Project initialized. Waiting for pipeline updates...</span>
+                <div class="log-header">
+                    <div class="log-meta">
+                        <span class="commit-hash">17ee681</span>
+                        <span class="log-author">Hardik Agrawal</span>
+                    </div>
+                    <span class="log-timestamp">2026-02-12 04:47:48</span>
+                </div>
+                <div class="log-message">Merge remote changes and resolve index.html conflict</div>
             </div>
+
+            <div class="log-entry">
+                <div class="log-header">
+                    <div class="log-meta">
+                        <span class="commit-hash">4b4eed8</span>
+                        <span class="log-author">Hardik Agrawal</span>
+                    </div>
+                    <span class="log-timestamp">2026-02-12 10:11:34</span>
+                </div>
+                <div class="log-message">Initial commit with index.html, update script, and pipeline</div>
+            </div>
+
+            <div class="log-entry">
+                <div class="log-header">
+                    <div class="log-meta">
+                        <span class="commit-hash">Unknown</span>
+                        <span class="log-author">Unknown</span>
+                    </div>
+                    <span class="log-timestamp">2026-02-12 10:10:23</span>
+                </div>
+                <div class="log-message">Error getting git info: Command '['git', 'log', '-1', '--format=%h']' returned
+                    non-zero exit status 128.</div>
+            </div>
+
+            <div class="log-entry">
+                <div class="log-header">
+                    <div class="log-meta">
+                        <span class="commit-hash">INIT</span>
+                        <span class="log-author">System</span>
+                    </div>
+                    <span class="log-timestamp">Initial Setup</span>
+                </div>
+                <div class="log-message">Project initialized. Waiting for pipeline updates...</div>
+            </div>
+
         </div>
     </div>
 

@@ -17,9 +17,15 @@ def update_html(commit_hash, commit_msg, commit_author):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     new_entry = f"""
-            <div class="log-entry">
-                <span class="log-timestamp">[{timestamp}] Commit {commit_hash} by {commit_author}:</span> 
-                <span class="log-message">{commit_msg}</span>
+            <div class="log-entry new">
+                <div class="log-header">
+                    <div class="log-meta">
+                        <span class="commit-hash">{commit_hash}</span>
+                        <span class="log-author">{commit_author}</span>
+                    </div>
+                    <span class="log-timestamp">{timestamp}</span>
+                </div>
+                <div class="log-message">{commit_msg}</div>
             </div>
     """
     
